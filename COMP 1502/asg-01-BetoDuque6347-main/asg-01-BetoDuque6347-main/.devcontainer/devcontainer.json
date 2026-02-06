@@ -1,0 +1,19 @@
+{
+    "customizations": {
+        // Configure properties specific to VS Code.
+        "vscode": {
+            // Set *default* container specific settings.json values on container create.
+            "settings": {
+                "remoteHub.commitDirectlyWarning": "off",
+                "extensions.ignoreRecommendations": true
+            },
+            // Add the IDs of extensions you want installed when the container is created.
+            "extensions": [
+                "redhat.java",
+				"vscjava.vscode-java-debug",
+				"vscjava.vscode-java-test",
+				"vscjava.vscode-java-dependency"
+            ]
+        }
+    }
+}

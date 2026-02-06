@@ -1,0 +1,22 @@
+{
+    "editor.formatOnSave": true,
+    "java.import.generatesMetadataFilesAtProjectRoot": true,
+    "git.autoRepositoryDetection": false,
+    "java.silentNotification": true,
+    "java.debug.settings.showStaticVariables": true,
+    "java.server.launchMode": "Standard",
+    "java.jdt.ls.androidSupport.enabled": "off",
+    "redhat.telemetry.enabled": true,
+    "java.import.maven.enabled": false,
+    "java.import.gradle.enabled": false,
+    "java.import.gradle.wrapper.enabled": false,
+    "java.import.gradle.annotationProcessing.enabled": false,
+    "java.saveActions.organizeImports": true,
+    "java.project.sourcePaths": [
+        "src"
+    ],
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar"
+    ],
+}
