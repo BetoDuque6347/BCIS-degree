@@ -1,8 +1,0 @@
-[row.1]
-col.1 = "G2"
-
-[row.2]
-col.1 = "S4"
-
-[row.3]
-col.1 = "R4 G5 S5"
