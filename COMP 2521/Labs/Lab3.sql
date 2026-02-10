@@ -32,4 +32,4 @@
 -- 9. Run the previous query. Is the new course section included in your result? Explain your answer;
 --    show as a comment in your SQL file.
 
--- 10. Retrieve the coursee name, and the name of the prerequisite course for the those courses that have prerequisites.
+-- 10. Retrieve the course name, and the name of the prerequisite course for the those courses that have prerequisites.
