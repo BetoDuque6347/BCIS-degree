@@ -28,7 +28,7 @@ public class A1
     private File file;
     private int rowsToPrint;
 
-    private static final String FILE_PATH = "COMP 2503/A1/data/data4.txt";
+    private static final String FILE_PATH = "COMP 2503/A1/data/data3.txt";
     private static final String WORD_TO_FIND = "the";  //The assignment specifies one word but I still want flexibility.
 
     public static void main(String args[]) throws Exception
