@@ -61,8 +61,7 @@ HAVING SUM(c_sec.max_enrl) > 200;
 -- 7. Retrieve the location Id, building code and room of locations that have been scheduled for a course section.
 --    Show the nmber of course sections taking palce in each of those locations. Sort the result with location ID.
 --    Learn about the ORDER BY clause.
-SELECT l.loc_id, l.bldg_code, l.room,
-       COUNT(c_sec.section_id) AS number_of_sections
+SELECT l.loc_id, l.bldg_code, l.room, COUNT(c_sec.c_sec_id) AS number_of_sections
 FROM location AS l, course_section AS c_sec
 WHERE l.loc_id = c_sec.loc_id
 GROUP BY l.loc_id, l.bldg_code, l.room
@@ -71,7 +70,7 @@ ORDER BY l.loc_id;
 
 -- 8. Retrieve the course name, term description, faculy last name and room of course sections that have been scheduled.
 --    Write an insert statement to add a acourse section that has not been assigned to a location yet. 
---    In other words, the loc_id fofr that record is NULL. Look up on mySQL documentation for the INSERT statement.
+--    In other words, the loc_id for that record is NULL. Look up on mySQL documentation for the INSERT statement.
 SELECT c.course_name, t.term_desc, f.f_last, l.room
 FROM course_section AS c_sec
 JOIN course AS c ON c_sec.course_id = c.course_id
@@ -82,9 +81,6 @@ JOIN location AS l ON c_sec.loc_id = l.loc_id;
 
 -- 9. Run the previous query. Is the new course section included in your result? Explain your answer;
 --    show as a comment in your SQL file.
-INSERT INTO course_section
-(section_id, course_id, term_id, f_id, max_enrl, loc_id)
-VALUES (999, 'COMP2550', 1, 3, 30, NULL);
 
     -- The new section is NOT included because INNER JOIN is used.
     -- Since loc_id is NULL, it does not match a row in location.
@@ -92,32 +88,32 @@ VALUES (999, 'COMP2550', 1, 3, 30, NULL);
 
 -- 10. Retrieve the course name, and the name of the prerequisite course for the those courses that have prerequisites.
 SELECT c.course_name, p_course.course_name AS prerequisite
-FROM prerequisite AS p
+FROM course AS p_course
 JOIN course AS c ON p.course_id = c.course_id
 JOIN course AS p_course ON p.prereq_id = p_course.course_id;
 
 
 -- 11. Retrieve the first and last name of all faculty who have the same rank as Kim Cox. Do not show Kim Cox in 
 --     the result.  
-SELECT f1.f_first, f1.f_last
-FROM faculty AS f1
-WHERE f1.rank = 
+SELECT f.f_first, f.f_last
+FROM faculty AS f
+WHERE f.f_rank = 
     (
-        SELECT rank
+        SELECT f_rank
         FROM faculty
         WHERE f_first = 'Kim'
         AND f_last = 'Cox'
     )
-AND NOT (f1.f_first = 'Kim' AND f1.f_last = 'Cox');
+AND NOT (f.f_first = 'Kim' AND f.f_last = 'Cox');
 
 -- 12. Retrieve all student last names of those that are advised by Sarah Miller’s advisor. Do not show Sarah 
 --     Miller in the result. 
-SELECT s1.s_last
-FROM student AS s1
-WHERE s1.f_id = (
+SELECT s.s_last
+FROM student AS s
+WHERE s.f_id = (
         SELECT f_id
         FROM student
         WHERE s_first = 'Sarah'
         AND s_last = 'Miller'
       )
-AND NOT (s1.s_first = 'Sarah' AND s1.s_last = 'Miller');
+AND NOT (s.s_first = 'Sarah' AND s.s_last = 'Miller');
