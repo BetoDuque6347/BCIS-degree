@@ -4,11 +4,20 @@
 -- Due date: Feb 13, 2026
 
 -- 1. Retrieve the student's last names and the last name of their advisor. Make appropriate use of aliases.
+SELECT s.s_last, f.f_last
+FROM student AS s, faculty AS f
+WHERE s.s_id = f.f_id;
 
 -- 2. Retrieve the advisor name along with the number of students they are advising.
+SELECT f.f_last, f.f_first
+FROM faculty AS f, student AS s
+
 
 -- 3. Retrieve the last name of facutly members who are scheduled to teach course sections.
 --    Show the total maximum enrollment per faculty member.
+SELECT f.f_last, c_sec.max_enrl
+FROM faculty AS f, course_section AS c_sec;
+
 
 -- 4. Retrieve the course ID and course name of all sections that are scheduled in the course section table
 --    and their corresponding maximum enrollment.
@@ -33,3 +42,9 @@
 --    show as a comment in your SQL file.
 
 -- 10. Retrieve the course name, and the name of the prerequisite course for the those courses that have prerequisites.
+
+-- 11. Retrieve the first and last name of all faculty who have the same rank as Kim Cox. Do not show Kim Cox in 
+--     the result.  
+
+-- 12. Retrieve all student last names of those that are advised by Sarah Miller’s advisor. Do not show Sarah 
+--     Miller in the result. 

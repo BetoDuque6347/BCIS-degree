@@ -22,7 +22,7 @@ FROM course;
 -- born in 1985
 SELECT s_first, s_last, s_dob
 FROM student
-WHERE s_dob LIKE '1985%';
+WHERE s_dob LIKE '1985';
 
 
 -- 5. Write the above query in another way
