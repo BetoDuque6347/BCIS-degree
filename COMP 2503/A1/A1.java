@@ -1,6 +1,5 @@
 package A1;
 
-import java.io.File;
 import java.util.Scanner;
 
 /**
@@ -22,13 +21,11 @@ import java.util.Scanner;
  */
 public class A1 
 {
-    private Scanner fileScanner;
+    private Scanner input;
     private Table table;
     private Table tableWithWord;
-    private File file;
     private int rowsToPrint;
 
-    private static final String FILE_PATH = "COMP 2503/A1/data/data3.txt";
     private static final String WORD_TO_FIND = "the";  //The assignment specifies one word but I still want flexibility.
 
     public static void main(String args[]) throws Exception
@@ -40,17 +37,16 @@ public class A1
     /**
      * Runs the program.
      */
-    public void run() throws Exception
+    public void run()
     {
-        file = new File(FILE_PATH);
-        fileScanner = new Scanner(file);
+        input = new Scanner(System.in);
         table = new Table();
         rowsToPrint = 0;
 
         //Populate the table with file contents.
-        while (fileScanner.hasNextLine())
+        while (input.hasNextLine())
         {
-            table.addRow(fileScanner.nextLine());
+            table.addRow(input.nextLine());
         }
         
         //The program will NEVER print MORE THAN 10 lines from the text file.
