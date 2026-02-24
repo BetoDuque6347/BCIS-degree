@@ -51,6 +51,7 @@ public class Table {
         File file = new File(filePath);
         Scanner fileScanner = new Scanner(file);
         this.rowCount = 0;
+        this.table = new ArrayList<>();
 
         //Convert the .csv file into a Table using a loop.
         while (fileScanner.hasNextLine())
@@ -58,7 +59,6 @@ public class Table {
             String currentLine = fileScanner.nextLine();
             Row row = new Row(rowCount, currentLine);
             this.addRow(row);
-            rowCount++;
         }
 
         fileScanner.close();
@@ -98,7 +98,7 @@ public class Table {
     public void addRow(Row r)
     {
         //Get the data from the row, then add it via the other addRow(String[] s) method.
-        String[] data = r.getData();
+        String data = r.getData();
         this.addRow(data);
     }
 

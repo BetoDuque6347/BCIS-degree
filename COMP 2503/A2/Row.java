@@ -23,7 +23,19 @@ public class Row implements Comparable<Row>
 
     //Getters and setters for instance variables
     public int getID() {return ID;}
-    public String[] getData() {return data;}
+    public String getData()
+    {
+        //Returns the actual data within each row, not the memory address of data.
+        String actualData = "";
+
+        for(int i = 0; i < data.length; i++)
+        {
+            actualData += this.data[i] + ", ";
+        }
+        actualData
+
+        return actualData;
+    }
 
     /**
      * Constructor for comma separated Strings
@@ -32,7 +44,14 @@ public class Row implements Comparable<Row>
     {
         this.ID = ID;
         data = new String[ROW_SIZE];
-        data = s.split(",");
+        String[] splitString = s.split(",");
+
+        //Create a deep copy of s to feed into data.
+        //Didn't use ROW_SIZE for this loop because some rows only have four columns.
+        for(int i = 0; i < splitString.length; i++)
+        {
+            this.data[i] = splitString[i];
+        }
     }
 
     /**
