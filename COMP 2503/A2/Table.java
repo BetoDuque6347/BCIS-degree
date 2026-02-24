@@ -19,8 +19,8 @@ import java.util.Scanner;
  *      @author Beto Duque
  * </p>
  */
-public class Table {
-
+public class Table 
+{
     private ArrayList<Row> table;
     private int rowCount;
 
@@ -153,7 +153,7 @@ public class Table {
      * 
      * @return
      */
-    //public Table select(String s)
+    public Table select(String s)
     {
 
     }
@@ -163,7 +163,7 @@ public class Table {
      * 
      * @return
      */
-    //public Table project(String[] cols)
+    public Table project(String[] cols)
     {
         
     }

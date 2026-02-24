@@ -20,13 +20,19 @@ public class Row implements Comparable<Row>
     private String[] data;
 
     private static final int ROW_SIZE = 5;
-    private static final int LAST_TWO_LETTERS = 2;
+    private static final int LAST_TWO_CHARS = 2;
 
     //Getters and setters for instance variables
     public int getID() {return ID;}
+
+    /**
+     * Returns the actual data within each row, not the memory address of data.
+     * 
+     * @return
+     * The data within each row.
+     */
     public String getData()
     {
-        //Returns the actual data within each row, not the memory address of data.
         String actualData = "";
 
         for(int i = 0; i < data.length; i++)
@@ -35,7 +41,7 @@ public class Row implements Comparable<Row>
         }
         
         //Kind of a weird solution to the string ending with ", ". It works though!
-        actualData = actualData.substring(0, actualData.length() - LAST_TWO_LETTERS);
+        actualData = actualData.substring(0, actualData.length() - LAST_TWO_CHARS);
 
         return actualData;
     }
