@@ -44,13 +44,13 @@ public class Table {
     }
 
     /**
-     * Allows for the creation of a {@code Table} via a filepath. The file must be a .csv.
+     * Allows for the creation of a {@code Table} via a filepath. The file must be a <b>.csv</b>.
      */
     public Table(String filePath) throws Exception
     {
         File file = new File(filePath);
         Scanner fileScanner = new Scanner(file);
-        rowCount = 0;
+        this.rowCount = 0;
 
         //Convert the .csv file into a Table using a loop.
         while (fileScanner.hasNextLine())
@@ -149,37 +149,21 @@ public class Table {
     }
 
     /**
-     * Returns a new {@code Table} containing the {@code String} <b>s</b> from another {@code Table}.
-     * 
      * @param s
-     * The target {@code String} to find within a {@code Table}.
      * 
      * @return
-     * A new {@code Table} with {@code Rows} that contain the target <b>s</b>.
      */
-    public Table select(String s)
+    //public Table select(String s)
     {
-        //Base case where the table is empty for some reason.
-        if (this.getRows() == 0)
-            return null;
 
-        Table tableWithWord = new Table();
-
-        //Iterate through the table and find any lines containing the target word.
-        for(Row row : this.table)
-        {
-            if (row.toString().contains(s))
-                tableWithWord.addRow(row.getData());
-        }
-
-        //Word does not appear in table.
-        if (tableWithWord.getRows() == 0)
-            return null;
-        
-        return tableWithWord;
     }
 
-    public Table project(String[] cols)
+    /**
+     * @param cols
+     * 
+     * @return
+     */
+    //public Table project(String[] cols)
     {
         
     }

@@ -41,6 +41,7 @@ public class Row implements Comparable<Row>
     public Row(int ID, String[] s)
     {
         this.ID = ID;
+        data = new String[ROW_SIZE];
         
         //Create a deep copy of s (not sure if we need a deep copy to begin with)
         for(int i = 0; i < s.length; i++)
