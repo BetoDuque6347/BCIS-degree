@@ -20,6 +20,7 @@ public class Row implements Comparable<Row>
     private String[] data;
 
     private static final int ROW_SIZE = 5;
+    private static final int LAST_TWO_LETTERS = 2;
 
     //Getters and setters for instance variables
     public int getID() {return ID;}
@@ -32,7 +33,9 @@ public class Row implements Comparable<Row>
         {
             actualData += this.data[i] + ", ";
         }
-        actualData
+        
+        //Kind of a weird solution to the string ending with ", ". It works though!
+        actualData = actualData.substring(0, actualData.length() - LAST_TWO_LETTERS);
 
         return actualData;
     }
