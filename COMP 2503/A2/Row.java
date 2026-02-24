@@ -19,9 +19,11 @@ public class Row implements Comparable<Row>
     private int ID;
     private String[] data;
 
+    private static final int ROW_SIZE = 5;
+
     //Getters and setters for instance variables
     public int getID() {return ID;}
-    public String[] getData(){return data;}
+    public String[] getData() {return data;}
 
     /**
      * Constructor for comma separated Strings
@@ -29,6 +31,7 @@ public class Row implements Comparable<Row>
     public Row(int ID, String s)
     {
         this.ID = ID;
+        data = new String[ROW_SIZE];
         data = s.split(",");
     }
 
@@ -39,7 +42,7 @@ public class Row implements Comparable<Row>
     {
         this.ID = ID;
         
-        //Create a deep copy of String[] s (not sure if we need a deep copy to begin with)
+        //Create a deep copy of s (not sure if we need a deep copy to begin with)
         for(int i = 0; i < s.length; i++)
         {
             data[i] = s[i];
@@ -56,7 +59,8 @@ public class Row implements Comparable<Row>
      * The difference between the two {@code ID}s.
      */
     @Override
-    public int compareTo(Row o) {
+    public int compareTo(Row o) 
+    {
         int comparison = this.getID() - o.getID();
 
         return comparison;
@@ -75,9 +79,31 @@ public class Row implements Comparable<Row>
     }
 
     /**
+     * Get the value of an item within a row at a specified index.
+     * 
+     * @param index
+     * The index of the column to be returned.
+     * 
+     * @return
+     * The data at the specified index, returned as a {@code String}.
      */
-    public void setColumn()
+    public String getColumnAt(int index)
     {
+        return data[index];
+    }
 
+    /**
+     * Set the value of an item within a row at a specified index.
+     * 
+     * @param index
+     * The index of the column to be set.
+     * 
+     * @param data
+     * The data to be set at the specified index.
+     */
+    public void setColumnAt(int index, String data)
+    {
+        //Not gonna lie, I could not find a cooler adjective for data.
+        this.data[index] = data;
     }
 }
