@@ -153,9 +153,9 @@ public class Table
      * 
      * @return
      */
-    public Table select(String s)
+    public Table select(String field, String value)
     {
-
+        return null;
     }
 
     /**
@@ -165,6 +165,6 @@ public class Table
      */
     public Table project(String[] cols)
     {
-        
+        return null;
     }
 }
