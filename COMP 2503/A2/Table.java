@@ -162,9 +162,46 @@ public class Table
      * @param cols
      * 
      * @return
+     * 
      */
     public Table project(String[] cols)
     {
-        return null;
+        //Base case where cols is empty for some reason.
+        if (cols.length == 0)
+            return null;
+
+        //Create the table to be returned with the correct data.
+        //We know that the first row should have the labels for the data, so force the first row to be the header names.
+        Table tableWithSelectedRows = new Table();
+        tableWithSelectedRows.addRow(cols);
+
+        Row currentRow;
+        Row selectedColumn;
+
+        //We are assuming the first row is ALWAYS the header for the table
+        //and there are NO duplicates.
+        for(int i = 0; i < cols.length; i++)
+        {
+            currentRow = this.table.get(i);
+
+            //Get the data from the current Row as a String[].
+            String[] currentRowData = currentRow.getData();
+
+            //Check if the listed column exists in the table.
+            if (cols[i].equals(currentRowData[i]))
+            {
+                for(int j = 0; j < table.size(); j++)
+                {
+                
+                }
+            }
+            //The listed column does not exist in the table.
+            else
+            {
+                return null;
+            }
+        }
+
+        return tableWithSelectedRows;
     }
 }

@@ -26,8 +26,8 @@ public class AlphabeticalRowComparator implements Comparator<Row>
     @Override
     public int compare(Row r1, Row r2)
     {
-        String row1 = r1.getData();
-        String row2 = r2.getData();
+        String row1 = r1.getStringData();
+        String row2 = r2.getStringData();
 
         //Kind of feels like cheating using the built in String comparator method but if it works then it works!
         return row1.compareToIgnoreCase(row2);

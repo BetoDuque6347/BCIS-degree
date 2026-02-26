@@ -20,10 +20,12 @@ public class Row implements Comparable<Row>
     private String[] data;
 
     private static final int ROW_SIZE = 5;
+    private static final int START_OF_STRING = 0;
     private static final int LAST_TWO_CHARS = 2;
 
     //Getters and setters for instance variables
     public int getID() {return ID;}
+    public String[] getData() {return data;}
 
     /**
      * Returns the actual data within each row, not the memory address of data.
@@ -31,7 +33,7 @@ public class Row implements Comparable<Row>
      * @return
      * The data within each row.
      */
-    public String getData()
+    public String getStringData()
     {
         String actualData = "";
 
@@ -40,8 +42,8 @@ public class Row implements Comparable<Row>
             actualData += this.data[i] + ", ";
         }
         
-        //Kind of a weird solution to the string ending with ", ". It works though!
-        actualData = actualData.substring(0, actualData.length() - LAST_TWO_CHARS);
+        //Kind of a weird solution to the String ending with ", ". It works though!
+        actualData = actualData.substring(START_OF_STRING, actualData.length() - LAST_TWO_CHARS);
 
         return actualData;
     }
@@ -104,7 +106,7 @@ public class Row implements Comparable<Row>
     @Override
     public String toString()
     {
-        return("Row " + getID() + ": " + getData());
+        return("Row " + getID() + ": " + getStringData());
     }
 
     /**
