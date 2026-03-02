@@ -3,19 +3,11 @@ SELECT
     g.student_id
     g.grade_type_code
     g.numeric_grade
-FROM grade grade
-WHERE g.student_id IN (
-    SELECT
-        s.student_id
-        FROM studen s
-        WHERE s.first_name = 'Larry'
-        AND s.last_name = 'Walter'
-)
-AND g.grade_type_code IN (
-    SELECT gt.grade_type_code
-    FROM grade_type gt
-    WHERE gt.description IN('Homework', 'Quiz')
-);
+FROM student s
+JOIN grade g ON s.student_id = g.student_id
+JOIN grade_type gt ON s.student_id = gt.grade_type_code
+WHERE s.first_name = 'Larry', AND s.last_name = 'Walter'
+AND gt.description IN ("Homework", "Quiz");
 
 --Query 14:
 SELECT s.first_name, s.last_name, g.numeric_grade
