@@ -1,13 +1,14 @@
 --Query 13:
-SELECT
-    g.student_id
-    g.grade_type_code
+SELECT s.first_name,
+    s.last_name,
+    g.section_id,
+    gt.description AS grade_type,
     g.numeric_grade
 FROM student s
 JOIN grade g ON s.student_id = g.student_id
-JOIN grade_type gt ON s.student_id = gt.grade_type_code
-WHERE s.first_name = 'Larry', AND s.last_name = 'Walter'
-AND gt.description IN ("Homework", "Quiz");
+JOIN grade_type gt ON g.grade_type_code = gt.grade_type_code
+WHERE s.first_name = 'Larry' AND s.last_name = 'Walter'
+  AND gt.description IN ('Homework', 'Quiz');
 
 --Query 14:
 SELECT s.first_name, s.last_name, g.numeric_grade
