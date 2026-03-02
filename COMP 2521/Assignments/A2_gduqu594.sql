@@ -16,3 +16,16 @@ AND g.grade_type_code IN (
     FROM grade_type gt
     WHERE gt.description IN('Homework', 'Quiz')
 );
+
+--Query 14:
+SELECT s.first_name, s.last_name, g.numeric_grade
+FROM student s
+JOIN zipcode z ON s.zip = z.zip
+JOIN enrollment e ON s.student_id = e.student_id
+JOIN section sec ON e.section_id = sec.section_id
+JOIN grade g ON g.student_id = s.student_id
+    AND g.section_id = sec.section_id
+WHERE z.state = 'NJ'
+    AND sec.course_no = 350
+    AND g.grade_type_code = "FI";
+
