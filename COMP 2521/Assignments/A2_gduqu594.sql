@@ -8,7 +8,7 @@ FROM student s
 JOIN grade g ON s.student_id = g.student_id
 JOIN grade_type gt ON g.grade_type_code = gt.grade_type_code
 WHERE s.first_name = 'Larry' AND s.last_name = 'Walter'
-  AND gt.description IN ('Homework', 'Quiz');
+AND gt.description IN ('Homework', 'Quiz');
 
 --Query 14:
 SELECT s.first_name, s.last_name, g.numeric_grade
@@ -21,6 +21,12 @@ JOIN grade g ON g.student_id = s.student_id
 WHERE z.state = 'NJ'
     AND sec.course_no = 350
     AND g.grade_type_code = "FI";
+
+--Query 18
+SELECT c1.course_no, c1.description, c1.prerequisite AS 'course needed', c1.description AS 'prerequisite description'
+FROM course c1, course c2
+WHERE c
+ORDER BY c1.description DESC;
 
 --Query 19
 SELECT location, MIN(capacity), MAX(capacity), SUM(capacity)
