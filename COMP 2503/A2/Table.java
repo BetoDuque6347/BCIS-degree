@@ -23,6 +23,7 @@ public class Table
 {
     private ArrayList<Row> table;
     private int rowCount;
+    private static final int HEADER_INDEX = 0;
 
     //Getters and setters for instance variables.
     public ArrayList<Row> getArrayList() {return table;}
@@ -57,7 +58,12 @@ public class Table
         while (fileScanner.hasNextLine())
         {
             String currentLine = fileScanner.nextLine();
-            Row row = new Row(rowCount, currentLine);
+
+            //This feels extremely inefficient, but it works!
+            int columnCount = currentLine.split(",").length;
+
+
+            Row row = new Row(rowCount, columnCount, currentLine);
             this.addRow(row);
         }
 
@@ -71,10 +77,9 @@ public class Table
      */
     public void addRow(String s)
     {
-        //Create a new row, then add it to the table.
-        Row row = new Row(rowCount, s);
-        table.add(row);
-        rowCount++;
+        //Convert the String to a String[], then add it via the other addRow(String[] s) method.
+        String[] data = s.split(",");
+        this.addRow(data);
     }
 
     /**
@@ -85,7 +90,8 @@ public class Table
     public void addRow(String[] s)
     {
         //Create a new row, then add it to the table.
-        Row row = new Row(rowCount, s);
+
+        Row row = new Row(rowCount, s.length, s);
         table.add(row);
         rowCount++;
     }
@@ -98,7 +104,7 @@ public class Table
     public void addRow(Row r)
     {
         //Get the data from the row, then add it via the other addRow(String[] s) method.
-        String data = r.getData();
+        String[] data = r.getData();
         this.addRow(data);
     }
 
@@ -171,36 +177,14 @@ public class Table
             return null;
 
         //Create the table to be returned with the correct data.
-        //We know that the first row should have the labels for the data, so force the first row to be the header names.
+        //We know that the first row will be header names, so force the first row to be the header names
+        //as specified by cols.
         Table tableWithSelectedRows = new Table();
         tableWithSelectedRows.addRow(cols);
+        
 
-        Row currentRow;
-        Row selectedColumn;
-
-        //We are assuming the first row is ALWAYS the header for the table
-        //and there are NO duplicates.
-        for(int i = 0; i < cols.length; i++)
-        {
-            currentRow = this.table.get(i);
-
-            //Get the data from the current Row as a String[].
-            String[] currentRowData = currentRow.getData();
-
-            //Check if the listed column exists in the table.
-            if (cols[i].equals(currentRowData[i]))
-            {
-                for(int j = 0; j < table.size(); j++)
-                {
-                
-                }
-            }
-            //The listed column does not exist in the table.
-            else
-            {
-                return null;
-            }
-        }
+        //Iterate through the current row and find the indexes of the selected columns
+        for(int i = 0; i < )
 
         return tableWithSelectedRows;
     }

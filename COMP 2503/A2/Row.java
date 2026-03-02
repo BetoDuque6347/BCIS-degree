@@ -19,7 +19,6 @@ public class Row implements Comparable<Row>
     private int ID;
     private String[] data;
 
-    private static final int ROW_SIZE = 5;
     private static final int START_OF_STRING = 0;
     private static final int LAST_TWO_CHARS = 2;
 
@@ -43,22 +42,22 @@ public class Row implements Comparable<Row>
         }
         
         //Kind of a weird solution to the String ending with ", ". It works though!
+        //Remove the very last two characters of actualData. These will always be ", " because of the algorithm above this line.
         actualData = actualData.substring(START_OF_STRING, actualData.length() - LAST_TWO_CHARS);
 
         return actualData;
     }
 
     /**
-     * Constructor for comma separated Strings
+     * Constructor for comma separated Strings.
      */
-    public Row(int ID, String s)
+    public Row(int ID, int size, String s)
     {
         this.ID = ID;
-        data = new String[ROW_SIZE];
+        data = new String[size];
         String[] splitString = s.split(",");
 
         //Create a deep copy of s to feed into data.
-        //Didn't use ROW_SIZE for this loop because some rows only have four columns.
         for(int i = 0; i < splitString.length; i++)
         {
             this.data[i] = splitString[i];
@@ -66,17 +65,17 @@ public class Row implements Comparable<Row>
     }
 
     /**
-     * Constructor for array of Strings
+     * Constructor for String[]s.
      */
-    public Row(int ID, String[] s)
+    public Row(int ID, int size, String[] s)
     {
         this.ID = ID;
-        data = new String[ROW_SIZE];
-        
-        //Create a deep copy of s (not sure if we need a deep copy to begin with)
+        this.data = new String[size];
+
+        //Create a deep copy of s to feed into data.
         for(int i = 0; i < s.length; i++)
         {
-            data[i] = s[i];
+            this.data[i] = s[i];
         }
     }
     
