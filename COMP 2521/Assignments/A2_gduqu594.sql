@@ -29,3 +29,7 @@ WHERE z.state = 'NJ'
     AND sec.course_no = 350
     AND g.grade_type_code = "FI";
 
+--Query 19
+SELECT location, MIN(capacity), MAX(capacity), SUM(capacity)
+FROM section
+GROUP BY location;
