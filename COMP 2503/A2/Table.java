@@ -176,29 +176,49 @@ public class Table
         if (cols.length == 0)
             return null;
 
-        //Create the table to be returned with the correct data.
-        //We know that the first row will be header names, so force the first row to be the header names
-        //as specified by cols.
-        Table tableWithSelectedRows = new Table();
-        tableWithSelectedRows.addRow(cols);
+        int amountOfColumns = cols.length;
 
-        String[] tableWithSelectedRowData = new String[cols.length];
-        int[] indexesOfSpecifiedColumn = new int[cols.length];
+        Table selectedColumns = new Table();
+        String[] correctRowData = new String[amountOfColumns];
+        int[] columnIndexes = new int[amountOfColumns];
         Row headers = this.table.get(HEADER_INDEX);
+        Row currentRow;
+        Row rowToBeAdded;
+        String currentColumn;
+        String specifiedColumn;
 
         //Find the indexes of each specified column.
         for(int i = 0; i < headers.getSize(); i++)
         {
-            for(int k = 0; k < cols.length; k++)
+            for(int k = 0; k < amountOfColumns; k++)
             {
-                if(headers.getColumnAt(i).equals(cols[k]))
+                currentColumn = headers.getColumnAt(i);
+                specifiedColumn = cols[k];
+
+                if(currentColumn.equals(specifiedColumn))
                 {
-                    indexesOfSpecifiedColumn[k] = i;
+                    columnIndexes[k] = i;
                 }
             }
         }
 
+        for(int i = 0; i < getRows(); i++)
+        {
+            currentRow = this.table.get(i);
 
-        return tableWithSelectedRows;
+            for(int k = 0; k < correctRowData.length; k++)
+            {
+                if (columnIndexes[k] >= currentRow.getSize())
+                    correctRowData[k] = null;
+                else
+                    correctRowData[k] = currentRow.getColumnAt(columnIndexes[k]);
+            }
+
+            rowToBeAdded = new Row(i, amountOfColumns, correctRowData);
+            selectedColumns.addRow(rowToBeAdded);
+        }
+
+        System.out.println("Done");
+        return selectedColumns;
     }
 }
