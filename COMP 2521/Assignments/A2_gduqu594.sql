@@ -162,11 +162,11 @@ ORDER BY lowest_final_exam DESC;
 
 
 --Query 16:
-SELECT e.student_id, sec.course_no, COUNT() AS times_enrolled
+SELECT e.student_id, sec.course_no, COUNT(*) AS times_enrolled
 FROM university.enrollment e
 JOIN university.section sec ON e.section_id = sec.section_id
 GROUP BY e.student_id, sec.course_no
-HAVING COUNT() > 1;
+HAVING COUNT(*) > 1;
 
 
 --Query 17:
