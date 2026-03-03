@@ -12,7 +12,9 @@ public class A2
     {
         Table table = new Table("COMP 2503\\A2\\a2_data.csv");
 
-        String[] columns = {"count", "notes"};
-        System.out.println(table.project(columns).printTable(0));
+        System.out.println(table.select("colour", "black").printTable(0));
+
+        //String[] columns = {"count", "notes"};
+        //System.out.println(table.project(columns).printTable(0));
     }
 }

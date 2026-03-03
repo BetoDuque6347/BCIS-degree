@@ -155,13 +155,40 @@ public class Table
     }
 
     /**
-     * @param s
+     * @param field
+     * 
+     * @param value
      * 
      * @return
      */
     public Table select(String field, String value)
     {
-        return null;
+        Table selectedTable = new Table();
+
+        Row headers = this.table.get(HEADER_INDEX);
+        int indexOfField = 0;
+        Row currentRow;
+
+        for(int i = 0; i < headers.getSize(); i++)
+        {
+            if(headers.getData()[i].equals(field))
+            {
+                indexOfField = i;
+
+                //Since there is only one field to search for, once it is found we should leave the loop for optimization.
+                break;
+            }
+        }
+
+        for(int i = 0; i < this.table.size(); i++)
+        {
+            currentRow = this.table.get(i);
+
+            if(currentRow.getColumnAt(indexOfField).equals(value))
+                selectedTable.addRow(currentRow);
+        }
+
+        return selectedTable;
     }
 
     /**
