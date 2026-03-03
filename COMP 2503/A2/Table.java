@@ -147,11 +147,11 @@ public class Table
     }
 
     /**
-     * Sort a {@code Table} by ascending alphabetical order.
+     * Sort a {@code Table} by colour, in ascending alphabetical order.
      */
-    public void sortAlphabetical()
+    public void sortColour()
     {
-        Collections.sort(table, new AlphabeticalRowComparator());
+        Collections.sort(table, new ColourColumnComparator());
     }
 
     /**
@@ -171,7 +171,8 @@ public class Table
 
         for(int i = 0; i < headers.getSize(); i++)
         {
-            if(headers.getData()[i].equals(field))
+            String test = headers.getData()[i];
+            if(test.equals(field))
             {
                 indexOfField = i;
 
@@ -245,7 +246,6 @@ public class Table
             selectedColumns.addRow(rowToBeAdded);
         }
 
-        System.out.println("Done");
         return selectedColumns;
     }
 }
