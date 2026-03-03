@@ -11,7 +11,7 @@ public class A2
     public void run() throws Exception
     {
         Table table = new Table("COMP 2503\\A2\\a2_data.csv");
-        String[] project = {"species"};
-        System.out.println(table.project(project));
+        String[] project = {"area", "notes", "species"};
+        System.out.println(table.project(project).toString());
     }
 }

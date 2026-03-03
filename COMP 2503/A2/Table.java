@@ -181,10 +181,23 @@ public class Table
         //as specified by cols.
         Table tableWithSelectedRows = new Table();
         tableWithSelectedRows.addRow(cols);
-        
 
-        //Iterate through the current row and find the indexes of the selected columns
-        for(int i = 0; i < )
+        String[] tableWithSelectedRowData = new String[cols.length];
+        int[] indexesOfSpecifiedColumn = new int[cols.length];
+        Row headers = this.table.get(HEADER_INDEX);
+
+        //Find the indexes of each specified column.
+        for(int i = 0; i < headers.getSize(); i++)
+        {
+            for(int k = 0; k < cols.length; k++)
+            {
+                if(headers.getColumnAt(i).equals(cols[k]))
+                {
+                    indexesOfSpecifiedColumn[k] = i;
+                }
+            }
+        }
+
 
         return tableWithSelectedRows;
     }

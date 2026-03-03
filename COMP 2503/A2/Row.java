@@ -17,6 +17,7 @@ package A2;
 public class Row implements Comparable<Row>
 {
     private int ID;
+    private int size;
     private String[] data;
 
     private static final int START_OF_STRING = 0;
@@ -24,6 +25,7 @@ public class Row implements Comparable<Row>
 
     //Getters and setters for instance variables
     public int getID() {return ID;}
+    public int getSize() {return size;}
     public String[] getData() {return data;}
 
     /**
@@ -54,6 +56,7 @@ public class Row implements Comparable<Row>
     public Row(int ID, int size, String s)
     {
         this.ID = ID;
+        this.size = size;
         data = new String[size];
         String[] splitString = s.split(",");
 
@@ -70,6 +73,7 @@ public class Row implements Comparable<Row>
     public Row(int ID, int size, String[] s)
     {
         this.ID = ID;
+        this.size = size;
         this.data = new String[size];
 
         //Create a deep copy of s to feed into data.
