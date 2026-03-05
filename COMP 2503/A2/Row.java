@@ -1,18 +1,12 @@
 package A2;
 
 /**
- * <p>
- *      A {@code String} of text found within a {@code Table} class.
- * </p>
+ * <p>A {@code String[]} found within a {@code Table} class.</p>
  * 
- * <p>
- *      Each {@code Table} contains both an {@code ID}, and data stored as a {@code Table}.
- * </p>
+ * <p>Each {@code Row} contains both an {@code ID}, {@code size}, and data formatted as a {@code String[]}.</p>
  * 
- * <p>
- *      COMP 2503
- *      @author Beto Duque
- * </p>
+ * <p>COMP 2503</p>
+ * @author Beto Duque
  */
 public class Row implements Comparable<Row>
 {
@@ -20,6 +14,7 @@ public class Row implements Comparable<Row>
     private int size;
     private String[] data;
 
+    private static final String DELIMITER = ",";
     private static final int START_OF_STRING = 0;
     private static final int LAST_TWO_CHARS = 2;
 
@@ -29,7 +24,7 @@ public class Row implements Comparable<Row>
     public String[] getData() {return data;}
 
     /**
-     * Returns the actual data within each row, not the memory address of data.
+     * Returns the data within each row formatted as a String, not the memory address of data.
      * 
      * @return
      * The data within each row.
@@ -38,6 +33,7 @@ public class Row implements Comparable<Row>
     {
         String actualData = "";
 
+        //Compile each index of data and add it to a String
         for(int i = 0; i < data.length; i++)
         {
             actualData += this.data[i] + ", ";
@@ -51,14 +47,23 @@ public class Row implements Comparable<Row>
     }
 
     /**
-     * Constructor for comma separated Strings.
+     * Creates a row with a specified {@code ID}, {@code size}, and {@code String}
+     * 
+     * @param
+     * ID The ID of the row.
+     * 
+     * @param
+     * size The length (amount of items) in the row.
+     * 
+     * @param
+     * s The data within the row.
      */
     public Row(int ID, int size, String s)
     {
         this.ID = ID;
         this.size = size;
         data = new String[size];
-        String[] splitString = s.split(",");
+        String[] splitString = s.split(DELIMITER);
 
         //Create a deep copy of s to feed into data.
         for(int i = 0; i < splitString.length; i++)
@@ -68,7 +73,17 @@ public class Row implements Comparable<Row>
     }
 
     /**
-     * Constructor for String[]s.
+     * <p>Creates a row with a specified {@code ID}, {@code size}, and {@code String[]}.</p>
+     * <p>Creates a deep copy of <b>s</b>.</p>
+     * 
+     * @param
+     * ID The ID of the row.
+     * 
+     * @param
+     * size The length (amount of items) in the row.
+     * 
+     * @param
+     * s The data within the row.
      */
     public Row(int ID, int size, String[] s)
     {

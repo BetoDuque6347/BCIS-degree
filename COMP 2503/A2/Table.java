@@ -6,23 +6,19 @@ import java.util.Collections;
 import java.util.Scanner;
 
 /**
- * <p>
- *      A collection of {@code Rows}.
- * </p>
+ * <p>A collection of {@code Rows}.</p>
  * 
- * <p>
- *      The {@code Table} is stored as an <b>ArrayList</b>.
- * </p>
+ * <p>The {@code Table} is stored as an <b>ArrayList</b>.</p>
  * 
- * <p>
- *      COMP 2503
- *      @author Beto Duque
- * </p>
+ * <p>COMP 2503</p>
+ * @author Beto Duque
  */
 public class Table 
 {
     private ArrayList<Row> table;
     private int rowCount;
+
+    private static final String DELIMITER = ",";
     private static final int HEADER_INDEX = 0;
 
     //Getters and setters for instance variables.
@@ -34,9 +30,7 @@ public class Table
 
     /**
      * <b>Default constructor.</b>
-     * <p>
-     *      Creates a new, empty {@code Table}.
-     * </p>
+     * <p>Creates a new, empty {@code Table}.</p>
      */
     public Table()
     {
@@ -45,7 +39,10 @@ public class Table
     }
 
     /**
-     * Allows for the creation of a {@code Table} via a filepath. The file must be a <b>.csv</b>.
+     * Creates a {@code Table} with a specified <b>.csv</b> file.
+     * 
+     * @param
+     * filePath the path for the <b>.csv</b> file.
      */
     public Table(String filePath) throws Exception
     {
@@ -59,9 +56,9 @@ public class Table
         {
             String currentLine = fileScanner.nextLine();
 
+            //Finds the amount of columns within the current line.
             //This feels extremely inefficient, but it works!
-            int columnCount = currentLine.split(",").length;
-
+            int columnCount = currentLine.split(DELIMITER).length;
 
             Row row = new Row(rowCount, columnCount, currentLine);
             this.addRow(row);
@@ -71,35 +68,37 @@ public class Table
     }
 
     /**
-     * Add a row to the end of the table via a String.
+     * Add a {@code Row} to the end of the table via a String.
+     * 
      * @param s
      * The data to be added, formatted as a String.
      */
     public void addRow(String s)
     {
         //Convert the String to a String[], then add it via the other addRow(String[] s) method.
-        String[] data = s.split(",");
+        String[] data = s.split(DELIMITER);
         this.addRow(data);
     }
 
     /**
-     * Add a row to the end of the table via a String[].
+     * Add a {@code Row} to the end of the table via a String[].
+     * 
      * @param s
-     * The row to be added, formatted as a String[]
+     * The data to be added, formatted as a String[].
      */
     public void addRow(String[] s)
     {
         //Create a new row, then add it to the table.
-
         Row row = new Row(rowCount, s.length, s);
         table.add(row);
         rowCount++;
     }
 
     /**
-     * Add a row to the end of the table via an existing row.
+     * Add a {@code Row} to the end of the table via an existing {@code Row}.
+     * 
      * @param r
-     * The row to be added, via a row object.
+     * The {@code Row} to be added, via an existing {@code Row}.
      */
     public void addRow(Row r)
     {

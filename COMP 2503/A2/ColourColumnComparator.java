@@ -5,10 +5,8 @@ import java.util.Comparator;
 /**
  * A comparator that orders {@code Rows} by their colour, in alphabetical order.
  * 
- * <p>
- *      COMP 2503
- *      @author Beto Duque
- * </p>
+ * <p>COMP 2503</p>
+ * @author Beto Duque
  */
 public class ColourColumnComparator implements Comparator<Row>
 {
@@ -26,6 +24,7 @@ public class ColourColumnComparator implements Comparator<Row>
     @Override
     public int compare(Row r1, Row r2)
     {
+        //Assuming the .csv is properly formatted, the index of the colour column is always 1.
         final int COLOUR_COLUMN_INDEX = 1;
 
         String row1Colour = r1.getData()[COLOUR_COLUMN_INDEX];
