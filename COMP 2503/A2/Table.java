@@ -156,13 +156,11 @@ public class Table
     {
         Collections.sort(table, new ColourColumnComparator());
 
-        //Find the index of the header row, then swap it with the first row in the table.
+        //Find the index of the header row, then swap it with the 0th row in the table.
         for(int i = 0; i < getRows(); i++)
         {
             if (table.get(i).getID() == 0)
-            {
                 Collections.swap(table, i, 0);
-            }
         }
     }
 
