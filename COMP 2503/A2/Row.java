@@ -49,14 +49,14 @@ public class Row implements Comparable<Row>
     /**
      * Creates a row with a specified {@code ID}, {@code size}, and {@code String}
      * 
-     * @param
-     * ID The ID of the row.
+     * @param ID
+     * The ID of the row.
      * 
-     * @param
-     * size The length (amount of items) in the row.
+     * @param size
+     * The length (amount of items) in the row.
      * 
-     * @param
-     * s The data within the row.
+     * @param s
+     * The data within the row.
      */
     public Row(int ID, int size, String s)
     {
@@ -76,14 +76,14 @@ public class Row implements Comparable<Row>
      * <p>Creates a row with a specified {@code ID}, {@code size}, and {@code String[]}.</p>
      * <p>Creates a deep copy of <b>s</b>.</p>
      * 
-     * @param
-     * ID The ID of the row.
+     * @param ID
+     * The ID of the row.
      * 
-     * @param
-     * size The length (amount of items) in the row.
+     * @param size
+     * The length (amount of items) in the row.
      * 
-     * @param
-     * s The data within the row.
+     * @param s
+     * The data within the row.
      */
     public Row(int ID, int size, String[] s)
     {

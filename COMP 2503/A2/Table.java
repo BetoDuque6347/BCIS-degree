@@ -41,8 +41,8 @@ public class Table
     /**
      * Creates a {@code Table} with a specified <b>.csv</b> file.
      * 
-     * @param
-     * filePath the path for the <b>.csv</b> file.
+     * @param filePath
+     * the path for the <b>.csv</b> file.
      */
     public Table(String filePath) throws Exception
     {
@@ -108,13 +108,9 @@ public class Table
     }
 
     /**
-     * <p>
-     *      Prints out every {@code Row} in the {@code Table} up to <b>r</b>.
-     * </p>
+     * <p>Prints out every {@code Row} in the {@code Table} up to <b>r</b>.</p>
      * 
-     * <p>
-     *      If <b>r</b> is 0, print out the whole {@code Table}.
-     * </p>
+     * <p>If <b>r</b> is 0, print out the whole {@code Table}.</p>
      * 
      * @param r
      * The amount of {@code Rows} to be printed.
@@ -128,6 +124,10 @@ public class Table
         if (r == 0)
             r = table.size();
 
+        //Base case where r is bigger than the amount rows that exist in a table.
+        else if (r > getRows())
+            r = getRows();
+
         //Iterate through the table, adding each row to formattedTable starting from the beginning.
         String formattedTable = "";
 
@@ -138,40 +138,62 @@ public class Table
     }
 
     /**
-     * Sort a {@code Table} using the natural ordering of its rows.
+     * <p>Sort a {@code Table} using the natural ordering of its rows.</p>
+     * <p>Does not include the header row when sorting.</p>
      */
     public void sortNatural()
     {
+        //Since the header index is always 0, we can guarantee the header
+        //row will appear first due to natural ordering.
         Collections.sort(table);
     }
 
     /**
-     * Sort a {@code Table} by colour, in ascending alphabetical order.
+     * <p>Sort a {@code Table} by colour, in ascending alphabetical order.</p>
+     * <p>Does not include the header row when sorting.</p>
      */
     public void sortColour()
     {
         Collections.sort(table, new ColourColumnComparator());
+
+        //Find the index of the header row, then swap it with the first row in the table.
+        for(int i = 0; i < getRows(); i++)
+        {
+            if (table.get(i).getID() == 0)
+            {
+                Collections.swap(table, i, 0);
+            }
+        }
     }
 
     /**
+     * <p>Returns a new {@code Table} that contains all of the columns of the exiting {@code Table}
+     * but with only the {@code Rows} from the {@code Table} where column <b>field</b> contains
+     * the {@code String} <b>value</b>.</p>
+     * 
      * @param field
+     * The column to be searched within the {@code Table}.
      * 
      * @param value
+     * The value to find within the <b>field</b> column.
      * 
      * @return
+     * A new {@code Table} consisting of only the {@code Rows} with <b>value</b> found in column <b>field</b>.
      */
     public Table select(String field, String value)
     {
         Table selectedTable = new Table();
 
-        Row headers = this.table.get(HEADER_INDEX);
+        Row headers = table.get(HEADER_INDEX);
         int indexOfField = 0;
         Row currentRow;
 
+        //Iterate through the header row to find the index of field.
         for(int i = 0; i < headers.getSize(); i++)
         {
-            String test = headers.getData()[i];
-            if(test.equals(field))
+            String headerColumn = headers.getData()[i];
+
+            if(headerColumn.equals(field))
             {
                 indexOfField = i;
 
@@ -180,9 +202,10 @@ public class Table
             }
         }
 
-        for(int i = 0; i < this.table.size(); i++)
+        //Iterate through the entire table and check the ith column if it contains value.
+        for(int i = 0; i < rowCount; i++)
         {
-            currentRow = this.table.get(i);
+            currentRow = table.get(i);
 
             if(currentRow.getColumnAt(indexOfField).equals(value))
                 selectedTable.addRow(currentRow);
@@ -192,10 +215,14 @@ public class Table
     }
 
     /**
+     * <p>Returns a new {@code Table} that consists of all the {@code Rows} of the existing
+     * {@code Table} but with only the columns listed.</p>
+     * 
      * @param cols
+     * A {@code String[]} of values containing which columns should be returned.
      * 
      * @return
-     * 
+     * A new {@code Table} consisting of all the columns specified in <b>cols</b>.
      */
     public Table project(String[] cols)
     {
@@ -203,44 +230,48 @@ public class Table
         if (cols.length == 0)
             return null;
 
-        int amountOfColumns = cols.length;
 
-        Table selectedColumns = new Table();
+        int amountOfColumns = cols.length;
         String[] correctRowData = new String[amountOfColumns];
         int[] columnIndexes = new int[amountOfColumns];
-        Row headers = this.table.get(HEADER_INDEX);
+
+        Table selectedColumns = new Table();
+        Row headers = table.get(HEADER_INDEX);
         Row currentRow;
         Row rowToBeAdded;
         String currentColumn;
         String specifiedColumn;
 
-        //Find the indexes of each specified column.
+        //Find the indexes of the specified columns. Add each index to columnIndexes.
+        //Iterate through the header column.
         for(int i = 0; i < headers.getSize(); i++)
         {
+            //Find each individual column index.
             for(int k = 0; k < amountOfColumns; k++)
             {
                 currentColumn = headers.getColumnAt(i);
                 specifiedColumn = cols[k];
 
                 if(currentColumn.equals(specifiedColumn))
-                {
                     columnIndexes[k] = i;
-                }
             }
         }
 
+        //Using columnIndexes, create a new row containing only the columns listed
+        //then add it to selectedColumns.
+        //Iterate through the entire table.
         for(int i = 0; i < getRows(); i++)
         {
-            currentRow = this.table.get(i);
+            currentRow = table.get(i);
 
+            //Retrieve the desired columns from the current table into correctRowData[].
+            //This will be used to create a new row.
             for(int k = 0; k < correctRowData.length; k++)
             {
-                if (columnIndexes[k] >= currentRow.getSize())
-                    correctRowData[k] = null;
-                else
-                    correctRowData[k] = currentRow.getColumnAt(columnIndexes[k]);
+                correctRowData[k] = currentRow.getColumnAt(columnIndexes[k]);
             }
 
+            //Create the row with the correct data and add it to selectedColumns.
             rowToBeAdded = new Row(i, amountOfColumns, correctRowData);
             selectedColumns.addRow(rowToBeAdded);
         }

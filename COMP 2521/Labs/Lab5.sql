@@ -56,3 +56,7 @@ AND course_id IN (
     FROM course_section
     WHERE course_name LIKE 'Database Management'
 );
+
+--Retrieve the grade adn the term id values for the student Sarah Miller's
+--System Analysis course. Write this using at least one subquery.
+SELECT e.enrollment, t.term_id

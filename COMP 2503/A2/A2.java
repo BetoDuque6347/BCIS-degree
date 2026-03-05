@@ -41,7 +41,7 @@ public class A2
      */
     public void run() throws Exception
     {
-        rowsToPrint = 0;
+        rowsToPrint = 10;
 
         columnColour = "colour";
         colourToFind = "black";
@@ -50,23 +50,23 @@ public class A2
         Table table = new Table(input.nextLine());
 
         //Part 1 of the assignment
-        System.out.println("Part 1:\n");
+        System.out.println("Part 1 (Print table and number of rows):\n");
         System.out.println("Number of rows in the table: " + table.getRows());
         System.out.println(table.printTable(rowsToPrint));
 
         //Part 2 of the assignment
-        System.out.println("\nPart 2:");
+        System.out.println("\nPart 2 (Sort by colour):\n");
         table.sortColour();
         System.out.println(table.printTable(rowsToPrint));
         table.sortNatural(); //Undo the previous sort, since it breaks things and acts weird.
 
         //Part 3 of the assignmnet
-        System.out.println("\nPart 3:\n");
+        System.out.println("\nPart 3 (Print out only rows containing black):\n");
         Table tableWithOnlyBlack = table.select(columnColour, colourToFind);
         System.out.println(tableWithOnlyBlack.printTable(rowsToPrint));
 
         //Part 4 of the assignment
-        System.out.println("\nPart 4:\n");
+        System.out.println("\nPart 4 (Print out species, count, and notes):\n");
         Table tableWithSpeciesCountNotes = table.project(columnsToFind);
         System.out.println(tableWithSpeciesCountNotes.printTable(rowsToPrint));
     }
