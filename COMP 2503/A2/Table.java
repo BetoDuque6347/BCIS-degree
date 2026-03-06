@@ -20,6 +20,7 @@ public class Table
 
     private static final String DELIMITER = ",";
     private static final int HEADER_INDEX = 0;
+    private static final int ROW_OFFSET = 1;
 
     //Getters and setters for instance variables.
     public ArrayList<Row> getArrayList() {return table;}
@@ -154,13 +155,25 @@ public class Table
      */
     public void sortColour()
     {
-        Collections.sort(table, new ColourColumnComparator());
+        Table sortedTable = new Table();
 
-        //Find the index of the header row, then swap it with the 0th row in the table.
-        for(int i = 0; i < getRows(); i++)
+        //Offset sortedTable ID by 1 since it does not include the header row.
+        sortedTable.setRows(ROW_OFFSET);
+
+        //Create a clone of the current table, except the header row.
+        for(int i = 1; i < getRows(); i++)
         {
-            if (table.get(i).getID() == 0)
-                Collections.swap(table, i, 0);
+            sortedTable.addRow(table.get(i));
+        }
+
+        Collections.sort(sortedTable.getArrayList(), new ColourColumnComparator());
+
+        //Double check this.table is already sorted.
+        Collections.sort(table);
+
+        for(int i = 1; i < sortedTable.getRows(); i++)
+        {
+            table.set(i, sortedTable.getArrayList().get(i - 1));
         }
     }
 

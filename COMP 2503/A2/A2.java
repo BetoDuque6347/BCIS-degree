@@ -24,11 +24,12 @@ import java.util.Scanner;
  */
 public class A2 
 {
-    Scanner input = new Scanner(System.in);
     int rowsToPrint;
     String columnColour;
     String colourToFind;
     String[] columnsToFind = {"species", "count", "notes"};
+    Table table;
+    Scanner input;
 
     public static void main(String[] args) throws Exception
     {
@@ -46,8 +47,10 @@ public class A2
         columnColour = "colour";
         colourToFind = "black";
 
+        input = new Scanner(System.in);
+
         //Create the table using the specified .csv
-        Table table = new Table(input.nextLine());
+        table = new Table(input.nextLine());
 
         //Part 1 of the assignment
         System.out.println("Part 1 (Print table and number of rows):\n");
