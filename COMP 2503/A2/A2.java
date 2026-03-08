@@ -36,6 +36,9 @@ public class A2
 
     /**
      * Runs the program.
+     * 
+     * @param filePath
+     * The file (.csv) to be used for the assignment.
      */
     public void run(String filePath) throws Exception
     {
