@@ -1,7 +1,5 @@
 package A2;
 
-import java.util.Scanner;
-
 /**
  * <p>
  *      The main class for the Table and Row system. Contains a main method.
@@ -24,53 +22,44 @@ import java.util.Scanner;
  */
 public class A2 
 {
-    int rowsToPrint;
-    String columnColour;
-    String colourToFind;
-    String[] columnsToFind = {"species", "count", "notes"};
-    Table table;
-    Scanner input;
+    private static final int ROWS_TO_PRINT = 10; //Specifies how many rows to print.
+    private static final String COLUMN = "colour"; //The colour column is always named "colour" (with a u).
+    private static final String COLOUR = "black"; //Specifies which colour to look for in the colour column.
+    private static final String[] COLUMNS_TO_FIND = {"species", "count", "notes"}; //Specifies which columns to project.
+    Table table; //Initialize the table to be used in the assignment.
 
     public static void main(String[] args) throws Exception
     {
         A2 a2 = new A2();
-        a2.run();
+        a2.run(args[0]);
     }
 
     /**
      * Runs the program.
      */
-    public void run() throws Exception
+    public void run(String filePath) throws Exception
     {
-        rowsToPrint = 10;
-
-        columnColour = "colour";
-        colourToFind = "black";
-
-        input = new Scanner(System.in);
-
         //Create the table using the specified .csv
-        table = new Table(input.nextLine());
+        table = new Table(filePath);
 
         //Part 1 of the assignment
         System.out.println("Part 1 (Print table and number of rows):\n");
         System.out.println("Number of rows in the table: " + table.getRows());
-        System.out.println(table.printTable(rowsToPrint));
+        System.out.println(table.printTable(ROWS_TO_PRINT));
 
         //Part 2 of the assignment
         System.out.println("\nPart 2 (Sort by colour):\n");
         table.sortColour();
-        System.out.println(table.printTable(rowsToPrint));
-        table.sortNatural(); //Undo the previous sort, since it breaks things and acts weird.
+        System.out.println(table.printTable(ROWS_TO_PRINT));
 
         //Part 3 of the assignmnet
         System.out.println("\nPart 3 (Print out only rows containing black):\n");
-        Table tableWithOnlyBlack = table.select(columnColour, colourToFind);
-        System.out.println(tableWithOnlyBlack.printTable(rowsToPrint));
+        Table tableWithOnlyBlack = table.select(COLUMN, COLOUR);
+        System.out.println(tableWithOnlyBlack.printTable(ROWS_TO_PRINT));
 
         //Part 4 of the assignment
         System.out.println("\nPart 4 (Print out species, count, and notes):\n");
-        Table tableWithSpeciesCountNotes = table.project(columnsToFind);
-        System.out.println(tableWithSpeciesCountNotes.printTable(rowsToPrint));
+        Table tableWithSpeciesCountNotes = table.project(COLUMNS_TO_FIND);
+        System.out.println(tableWithSpeciesCountNotes.printTable(ROWS_TO_PRINT));
     }
 }

@@ -15,12 +15,12 @@ import java.util.Scanner;
  */
 public class Table 
 {
-    private ArrayList<Row> table;
-    private int rowCount;
+    private ArrayList<Row> table; //The actual data within the table, as an ArrayList
+    private int rowCount; //The amount of rows within a table.
 
-    private static final String DELIMITER = ",";
-    private static final int HEADER_INDEX = 0;
-    private static final int ROW_OFFSET = 1;
+    private static final String DELIMITER = ","; //Delimiter for CSVs. Is a String because subString() only accepts Strings.
+    private static final int HEADER_INDEX = 0; //The index of the header row.
+    private static final int ROW_OFFSET = 1; //Offset amount to properly index a newly created Table except for the header row. Used in sortColour.
 
     //Getters and setters for instance variables.
     public ArrayList<Row> getArrayList() {return table;}
@@ -157,7 +157,7 @@ public class Table
     {
         Table sortedTable = new Table();
 
-        //Offset sortedTable ID by 1 since it does not include the header row.
+        //Offset sortedTable ID by 1 since it does not initially include the header row.
         sortedTable.setRows(ROW_OFFSET);
 
         //Create a clone of the current table, except the header row.
@@ -212,6 +212,8 @@ public class Table
                 break;
             }
         }
+        //Force the header row to exist within the new table.
+        selectedTable.addRow(headers);
 
         //Iterate through the entire table and check the ith column if it contains value.
         for(int i = 0; i < rowCount; i++)

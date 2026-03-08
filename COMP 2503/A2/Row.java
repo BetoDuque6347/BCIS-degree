@@ -10,18 +10,37 @@ package A2;
  */
 public class Row implements Comparable<Row>
 {
-    private int ID;
-    private int size;
-    private String[] data;
+    private int ID; //The ID of the row, used for natural ordering.
+    private int size; //The amount of columns within the row.
+    private String[] data; //Data stored in the row.
 
-    private static final String DELIMITER = ",";
-    private static final int START_OF_STRING = 0;
-    private static final int LAST_TWO_CHARS = 2;
+    private static final String DELIMITER = ","; //Delimiter for CSVs. Is a String because subString() only accepts Strings.
+    private static final int START_OF_STRING = 0; //Index of the first char in a String. Used in getStringData().
+    private static final int LAST_TWO_CHARS = 2; //The amount of chars to remove in subString(). Used in getStringData().
 
     //Getters and setters for instance variables
     public int getID() {return ID;}
     public int getSize() {return size;}
     public String[] getData() {return data;}
+
+    public void setID(int ID) {this.ID = ID;}
+    public void setSize(int size) {this.size = size;}
+
+    /**
+     * <p>Sets the data within a row (should not be used, just make a new Row).</p>
+     * <p>This method exists to fulfill the "getters and setters for all instance variables" requirement.</p>
+     * 
+     * @param data
+     * The data to replace the existing data.
+     */
+    public void setData(String[] data)
+    {
+        //Create a deepcopy of data.
+        for(int i = 0; i < data.length; i++)
+        {
+            this.data[i] = data[i];
+        }
+    }
 
     /**
      * Returns the data within each row formatted as a String, not the memory address of data.
