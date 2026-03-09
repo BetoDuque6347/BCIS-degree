@@ -11,19 +11,29 @@
 --1. Retrieve the locations to show the number of course sections scheduled to run in each of those
 --locations. Sort the result by location ID. Include also locations that do not have a course section
 --scheduled in them yet.
-
+SELECT l.loc_id, l.room, COUNT(c_sec.loc_id) AS section_amount
+FROM location l
+LEFT JOIN course_section c_sec ON l.loc_id = c_sec.loc_id
+GROUP BY l.loc_id
+ORDER BY l.loc_id;
 
 --2. Write an INSERT statement (as shown in class; you may also get help from the script file that
 --populated the tables) to add a course section that has not been scheduled in a location yet. i.e, with
 --loc_id is null.
---You can delete the row by the DELETE2 statement.
+INSERT INTO course_section
+VALUES(14, 1, 4, 6, NULL, 'MWF', '0000-00-00', '1800', NULL, 140);
 
 
 --2a. Now, retrieve the faculty's last name, bldg code, room, and the course section ID of all course sections
 --the faculty member is assigned to teach. Include all course sections regardless of whether or not they
 --have been scheduled in a location yet.
 --The result should basically include the row you added above.
+SELECT f.f_last, 
 
+
+--You can delete the row by the DELETE statement.
+DELETE FROM course_section
+WHERE c_sec_id = 14;
 
 --3. Write another insert statement to add a course section that does not have a faculty member assigned
 --to it yet, i.e., with f_id is null.
