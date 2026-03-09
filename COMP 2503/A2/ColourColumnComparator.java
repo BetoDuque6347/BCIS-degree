@@ -24,8 +24,7 @@ public class ColourColumnComparator implements Comparator<Row>
     @Override
     public int compare(Row r1, Row r2)
     {
-        //Assuming the .csv is properly formatted, the index of the colour column is always 1.
-        final int COLOUR_COLUMN_INDEX = 1;
+        //TODO: find the index of colour then replace COLOUR_COLUMN_INDEX with it.
 
         String row1Colour = r1.getData()[COLOUR_COLUMN_INDEX];
         String row2Colour = r2.getData()[COLOUR_COLUMN_INDEX];
