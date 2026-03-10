@@ -24,10 +24,25 @@ public class ColourColumnComparator implements Comparator<Row>
     @Override
     public int compare(Row r1, Row r2)
     {
-        //TODO: find the index of colour then replace COLOUR_COLUMN_INDEX with it.
+        final int HEADER_INDEX = 0;
+        final String COLOUR_COLUMN = "colour";
+        int colourColumnIndex = 0;
 
-        String row1Colour = r1.getData()[COLOUR_COLUMN_INDEX];
-        String row2Colour = r2.getData()[COLOUR_COLUMN_INDEX];
+        //Find the index of the colour column
+        if(r1.getID() == HEADER_INDEX)
+        {
+            for(int i = 0; i < r1.getSize(); i++)
+            {
+                if(r1.getColumnAt(i).equals(COLOUR_COLUMN));
+                {
+                    colourColumnIndex = i;
+                    break;
+                }
+            }
+        }
+
+        String row1Colour = r1.getData()[colourColumnIndex];
+        String row2Colour = r2.getData()[colourColumnIndex];
 
         return row1Colour.compareToIgnoreCase(row2Colour);
     }
