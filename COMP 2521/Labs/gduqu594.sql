@@ -1,134 +1,136 @@
---Lab 5
---Author: Beto Duque
---Instructor: Shoba Ittyipe
---Due date: March 16, 2026
+--Create procedure add_author
+DROP PROCEDURE add_author;
+delimiter $$
 
-
---DDL
-DROP TABLE IF EXISTS project_consultant;
-DROP TABLE IF EXISTS project;
-DROP TABLE IF EXISTS consultant;
-
-CREATE TABLE consultant (
-    c_id INT AUTO_INCREMENT,
-    c_last VARCHAR(20) NOT NULL,
-    c_first VARCHAR(20) NOT NULL,
-    c_dob DATE NOT NULL,
-    c_email VARCHAR(30) UNIQUE,
-    PRIMARY KEY (c_id)
-) ENGINE=InnoDB;
-
-CREATE TABLE project (
-    p_id INT AUTO_INCREMENT,
-    p_desc VARCHAR(50) NOT NULL UNIQUE,
-    parent_p_id INT,
-    mgr_id INT,
-    PRIMARY KEY (p_id),
-    FOREIGN KEY (mgr_id) REFERENCES consultant(c_id)
-) ENGINE=InnoDB;
-
-CREATE TABLE project_consultant (
-    p_id INT,
-    c_id INT,
-    roll_on_date DATE,
-    roll_off_date DATE,
-    PRIMARY KEY (p_id, c_id),
-    FOREIGN KEY (p_id) REFERENCES project(p_id),
-    FOREIGN KEY (c_id) REFERENCES consultant(c_id)
-) ENGINE=InnoDB;
-
-
-ALTER TABLE project
-ADD FOREIGN KEY (parent_p_id)
-REFERENCES project(p_id);
-
-
---DML
-INSERT INTO consultant (c_last, c_first, c_dob, c_email) VALUES
-('Myers','Mark','1968-05-05','mmyers@swexpert.com'),
-('Hernandez','Sheila','1971-10-08','shernandez@earthware.com'),
-('Zhang','Brian','1968-08-08','zhang@swexpert.com'),
-('Carlson','Sarah','1981-12-14','carlsons@swexpert.com'),
-('Courtlandt','Paul','1978-01-21','courtlpr@yamail.com'),
-('Park','Janet','1986-03-23','jpark@swexpert.com');
-
-
-INSERT INTO project (p_desc, parent_p_id, mgr_id) VALUES
-('Hardware Support Intranet', NULL, 1),
-('Hardware Support Interface', 1, 1),
-('Hardware Support Database', 2, 1),
-('Teller Support System', NULL, 6),
-('Internet Advertising', 1, 1),
-('Network Design', 1, 1),
-('Exploration Database', NULL, NULL);
-
-
-INSERT INTO project_consultant (p_id, c_id, roll_on_date, roll_off_date) VALUES
-(1,2,'2026-01-01','2026-06-30'),
-(2,3,'2026-02-01','2026-08-31'),
-(4,5,'2026-03-01','2026-12-31');
-
-
--- Sarah Carlson new email
-UPDATE consultant
-SET c_email = 'scarlson@gmail.com'
-WHERE c_first = 'Sarah'
-AND c_last = 'Carlson';
-
-
--- Brian Zhang becomes manager of Exploration Database
-UPDATE project
-SET mgr_id =
+CREATE PROCEDURE add_author
 (
-    SELECT c_id
-    FROM consultant
-    WHERE c_first='Brian'
-    AND c_last='Zhang'
+    IN id CHAR(11),
+    IN last VARCHAR(40),
+    IN first VARCHAR(20)
 )
-WHERE p_desc='Exploration Database';
-
-
--- Attempt to delete Hardware Support Interface
--- (Doesnt work because Hardware Support Database references it)
-DELETE FROM project
-WHERE p_desc='Hardware Support Interface';
-
-
--- Delete Network Design project
-DELETE FROM project
-WHERE p_desc='Network Design';
-
-
--- Teller Support System no longer managed by Sarah Carlson
-UPDATE project
-SET mgr_id = NULL
-WHERE p_desc='Teller Support System'
-AND mgr_id =
+BEGIN
+INSERT INTO author (au_id, au_lname, au_fname) VALUES
 (
-    SELECT c_id
-    FROM consultant
-    WHERE c_first='Sarah'
-    AND c_last='Carlson'
+    id,
+    last,
+    first
 );
+END$$
+delimiter ;
 
+--Test add_author
+CALL add_author('300', 'Collins', 'Suzanne');
+CALL add_author('400', 'Ittyipe', 'Shoba');
 
--- SELECT statement showing project description and consultant last name
--- Includes all projects even if no consultant assigned
-SELECT p.p_desc, c.c_last
-FROM project p
-LEFT JOIN project_consultant pc
-ON p.p_id = pc.p_id
-LEFT JOIN consultant c
-ON pc.c_id = c.c_id;
+--Write a SELECT statement to retrieve the rows inserted.
+SELECT *
+FROM author
+WHERE au_id = '300' OR au_id = '400';
 
+--Create procedure add_title
+DROP PROCEDURE add_title;
+delimiter $$
+CREATE PROCEDURE add_title
+(
+    IN tit_id CHAR(6),
+    IN tit_name VARCHAR(80),
+    IN publisher CHAR(4)
+)
+BEGIN
+INSERT INTO title (title_id, title, pub_id)
+VALUES (tit_id, tit_name, publisher);
+END$$
+delimiter ;
 
--- Create view from the SELECT
-CREATE VIEW sampleView AS
-SELECT p.p_desc, c.c_last
-FROM project p
-LEFT JOIN project_consultant pc
-ON p.p_id = pc.p_id
-LEFT JOIN consultant c
-ON pc.c_id = c.c_id;
+--Test add_title
+CALL add_title ("123", "About Life", "0877");
+CALL add_title ("789", "Udacity", "1389");
 
-SELECT * FROM sampleView;
+--Write a SELECT statement to retrieve the rows inserted.
+SELECT *
+FROM title
+WHERE contract IS NULL;
+
+--Create find_title()
+DROP FUNCTION find_title;
+delimiter $$
+
+CREATE FUNCTION find_title(titleName CHAR(80))
+    RETURNS char(6)
+BEGIN
+    DECLARE id CHAR(6);
+    SELECT title_id
+    INTO id
+    FROM title WHERE title = titleName;
+    return id;
+END$$
+delimiter ;
+
+--Test find_title()
+SELECT find_title("About Life") as id;
+
+--Create addAuthorTitle
+DROP PROCEDURE addAuthorTitle;
+delimiter $$
+
+CREATE PROCEDURE addAuthorTitle
+(
+    IN auNbr CHAR(11),
+    IN titleName VARCHAR(80),
+    IN ordering DECIMAL(3, 0),
+    IN royalty DECIMAL(6, 2)
+)
+BEGIN
+    DECLARE aid INT;
+    INSERT INTO author_title(au_id, title_id, au_ord, royaltyshare) VALUES (
+        auNbr,
+        find_title(titleName),
+        ordering,
+        royalty
+    );
+END$$
+
+delimiter ;
+
+--Test addAuthorTitle
+CALL addAuthorTitle(300, "About Life", 1, 0.6);
+CALL addAuthorTitle(400, "About Life", 2, 0.4);
+
+--Write a SELECT statement to retrieve the author's last name, first name, and the title's name,
+--the author order, and the royalty share of each author for the title "About Life"
+SELECT a.au_lname, a.au_fname, t.title, at.au_ord, at.royaltyshare
+FROM author a
+JOIN author_title at ON a.au_id = at.au_id
+JOIN title t ON at.title_id = t.title_id
+WHERE t.title = "About Life";
+
+--Create add_author_check
+DROP PROCEDURE add_author_check;
+delimiter $$
+
+CREATE PROCEDURE add_author_check
+(
+    IN id CHAR(11),
+    IN last VARCHAR(40),
+    IN first VARCHAR(20),
+    IN a VARCHAR(50),
+    OUT b VARCHAR(20)
+)
+BEGIN
+IF a LIKE 'Justin Beiber%' THEN
+    SET b = 'Invalid Entry!';
+ELSE
+    INSERT INTO author (au_id, au_lname, au_fname, address) VALUES 
+    (
+        id,
+        last,
+        first,
+        a
+    );
+END IF;
+END$$
+delimiter ;
+
+--Test add_author_check
+CALL add_author_check('11', 'Gomez', 'Selena', 'Justin Beiber', @just);
+
