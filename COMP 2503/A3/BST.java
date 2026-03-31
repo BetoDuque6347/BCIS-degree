@@ -1,5 +1,11 @@
 package A3;
 
+/**
+ * A standard Binary Search Tree class. Retrieved from lecture notes.
+ * 
+ * @author
+ * Alan Fedoruk
+ */
 public class BST<T extends Comparable<T>>
 {
     class BSTNode implements Comparable<BSTNode>
@@ -7,6 +13,13 @@ public class BST<T extends Comparable<T>>
         private T data;
         private BSTNode left;
         private BSTNode right;
+
+        public BSTNode(T d)
+        {
+            left = null;
+            right = null;
+            data = d;
+        }
 
         public T getData() {return data;}
         public BSTNode getLeft() {return left;}
@@ -24,13 +37,6 @@ public class BST<T extends Comparable<T>>
         public int compareTo(BSTNode o )
         {
             return this.getData().compareTo(o.getData());
-        }
-
-        public BSTNode(T d)
-        {
-            left = null;
-            right = null;
-            data = d;
         }
     }
 
@@ -57,6 +63,11 @@ public class BST<T extends Comparable<T>>
         size++;
     }
 
+    public void print()
+    {
+        traverse(root);
+    }
+
     private void add(BSTNode root, BSTNode node)
     {
         int comparison = node.compareTo(root);
@@ -74,6 +85,24 @@ public class BST<T extends Comparable<T>>
                 root.setRight(node);
             else
                 add(root.getRight(), node);
+        }
+    }
+
+    private void visit(BSTNode root)
+    {
+        if(root != null)
+            System.out.println(root.getData());
+    }
+
+    private void traverse(BSTNode root)
+    {
+        if (root == null)
+            return;
+        else
+        {
+            visit( root);
+            traverse(root.getRight());
+            traverse(root.getLeft());
         }
     }
 }

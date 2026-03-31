@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
+import A2.ColourColumnComparator;
+
 /**
  * <p>A collection of {@code Rows}.</p>
  * 
@@ -25,6 +27,7 @@ public class Table
     //Getters and setters for instance variables.
     public ArrayList<Row> getArrayList() {return table;}
     public int getRows() {return rowCount;}
+    private Row getHeaderRow() { return table.get(HEADER_INDEX);} //Made a getter for the header row since it is used quite often.
 
     public void setArrayList(ArrayList<Row> table) {this.table = table;}
     public void setRows(int rowCount) {this.rowCount = rowCount;}
@@ -195,7 +198,7 @@ public class Table
     {
         Table selectedTable = new Table();
 
-        Row headers = table.get(HEADER_INDEX);
+        Row headers = getHeaderRow();
         int indexOfField = 0;
         Row currentRow;
 
@@ -249,7 +252,7 @@ public class Table
         int[] columnIndexes = new int[amountOfColumns];
 
         Table selectedColumns = new Table();
-        Row headers = table.get(HEADER_INDEX);
+        Row headers = getHeaderRow();
         Row currentRow;
         Row rowToBeAdded;
         String currentColumn;
@@ -298,6 +301,17 @@ public class Table
      */
     public void addIndex(String column)
     {
-        
+        BST bst = new BST<>();
+        Row headers = getHeaderRow();
+        int columnIndex;
+
+        //Find which column to index
+        for(int i = 0; i < headers.getSize(); i++)
+        {
+            if(headers.getColumnAt(i).equals(column))
+                columnIndex = i;
+        }
+
+
     }
 }
