@@ -1,31 +1,36 @@
 package A3;
 
+import java.util.ArrayList;
+
+import java.util.ArrayList;
+
 /**
- * A standard Binary Search Tree class. Retrieved from lecture notes.
+ * A specialized Binary Search Tree class specifically for ArrayList<Row>. Retrieved from lecture notes.
  * 
+ * <p>COMP 2503</p>
  * @author
  * Alan Fedoruk
  */
-public class BST<T extends Comparable<T>>
+public class BST
 {
     class BSTNode implements Comparable<BSTNode>
     {
-        private T data;
+        private ArrayList<Row> data;
         private BSTNode left;
         private BSTNode right;
 
-        public BSTNode(T d)
+        public BSTNode(ArrayList<Row> d)
         {
             left = null;
             right = null;
             data = d;
         }
 
-        public T getData() {return data;}
+        public ArrayList<Row> getData() {return data;}
         public BSTNode getLeft() {return left;}
         public BSTNode getRight() {return right;}
 
-        public void setData(T data) {this.data = data;}
+        public void setData(ArrayList<Row> data) {this.data = data;}
         public void setLeft(BSTNode l) {left = l;}
         public void setRight(BSTNode r) {right = r;}
 
@@ -34,6 +39,7 @@ public class BST<T extends Comparable<T>>
             return ((getLeft() == null) && (getRight() == null));
         }
 
+        //TODO: fix compareTo so it compares two rows
         public int compareTo(BSTNode o )
         {
             return this.getData().compareTo(o.getData());
@@ -51,7 +57,7 @@ public class BST<T extends Comparable<T>>
 
     public int getSize() {return size;}
 
-    public void add(T data)
+    public void add(ArrayList<Row> data)
     {
         BSTNode node = new BSTNode(data);
 

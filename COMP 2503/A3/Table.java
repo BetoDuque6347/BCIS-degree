@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
-import A2.ColourColumnComparator;
-
 /**
  * <p>A collection of {@code Rows}.</p>
  * 
@@ -109,6 +107,19 @@ public class Table
         //Get the data from the row, then add it via the other addRow(String[] s) method.
         String[] data = r.getData();
         this.addRow(data);
+    }
+
+    /**
+     * Retrieve a {@code Row} within the table, specified by <b>index</b>.
+     * 
+     * @param index
+     * The index of the {@code Row} to be returned.
+     * @return
+     * The {@code Row} to be returned.
+     */
+    public Row getRowAt(int index)
+    {
+        return table.get(index);
     }
 
     /**
@@ -246,7 +257,6 @@ public class Table
         if (cols.length == 0)
             return null;
 
-
         int amountOfColumns = cols.length;
         String[] correctRowData = new String[amountOfColumns];
         int[] columnIndexes = new int[amountOfColumns];
@@ -301,17 +311,81 @@ public class Table
      */
     public void addIndex(String column)
     {
-        BST bst = new BST<>();
+        String key;
+        Row currentRow;
         Row headers = getHeaderRow();
-        int columnIndex;
+        int columnIndex = 0;
 
-        //Find which column to index
+        //Find columnIndex
         for(int i = 0; i < headers.getSize(); i++)
         {
             if(headers.getColumnAt(i).equals(column))
                 columnIndex = i;
         }
 
+        for(int i = 0; i < getRows(); i++)
+        {
+            currentRow = table.get(i);
+            key = currentRow.getColumnAt(columnIndex);
+            add(key, currentRow);
+        }
+    }
 
+    /**
+     * 
+     * @param key
+     * @param row
+     */
+    public void add(String key, Row row)
+    {
+    }
+
+    /**
+     * 
+     * @param key
+     * @return
+     */
+    public ArrayList<Row> find(String key)
+    {
+        return null;
+    }
+
+    /**
+     * <p>Returns a new {@code Table} that takes all the {@code Rows} in the current {@code Table} and appends 
+     * the {@code Rows} in {@code Table} <b>t</b>.</p>
+     * <p>If the number of columns is not equal, return null.</p>
+     * 
+     * @param t
+     * The {@code Table} that will be appended to the current {@code Table}.
+     * @return
+     * A new {@code Table} with {@code Table} <b>t</b> appended to it.
+    */
+    public Table union(Table t)
+    {
+        //Base case where the tables do not have the same amount of columms.
+        if(getHeaderRow().getSize() != t.getHeaderRow().getSize())
+            return null;
+    
+        Table unionedTable = new Table();
+
+        //Create a deep copy of this.table into unioned table.
+        for(int i = 0; i < getRows(); i++)
+        {
+            unionedTable.addRow(getRowAt(i));
+        }
+
+        //Also add the rows from t into unionedTable.
+        for(int i = 0; i < t.getRows(); i++)
+        {
+            unionedTable.addRow(t.getRowAt(i));
+        }
+
+        return unionedTable;
+    }
+
+    public Table cross(Table t)
+    {
+        Table crossedTable = new Table();
+        crossedTable.setRows(rowCount + );
     }
 }
