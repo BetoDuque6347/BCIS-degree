@@ -15,12 +15,12 @@ import java.util.Scanner;
  */
 public class Table 
 {
+    private ArrayList<BST> indexes = new ArrayList<>();
     private ArrayList<Row> table; //The actual data within the table, as an ArrayList
     private int rowCount; //The amount of rows within a table.
 
     private static final String DELIMITER = ","; //Delimiter for CSVs. Is a String because subString() only accepts Strings.
     private static final int HEADER_INDEX = 0; //The index of the header row.
-    private static final int ROW_OFFSET = 1; //Offset amount to properly index a newly created Table except for the header row. Used in sortColour.
 
     //Getters and setters for instance variables.
     public ArrayList<Row> getArrayList() {return table;}
@@ -164,37 +164,9 @@ public class Table
     }
 
     /**
-     * <p>Sort a {@code Table} by colour, in ascending alphabetical order.</p>
-     * <p>Does not include the header row when sorting.</p>
-     */
-    public void sortColour()
-    {
-        Table sortedTable = new Table();
-
-        //Offset sortedTable ID by 1 since it does not initially include the header row.
-        sortedTable.setRows(ROW_OFFSET);
-
-        //Create a clone of the current table, except the header row.
-        for(int i = 1; i < getRows(); i++)
-        {
-            sortedTable.addRow(table.get(i));
-        }
-
-        Collections.sort(sortedTable.getArrayList(), new ColourColumnComparator());
-
-        //Double check this.table is already sorted.
-        Collections.sort(table);
-
-        for(int i = 1; i < sortedTable.getRows(); i++)
-        {
-            table.set(i, sortedTable.getArrayList().get(i - 1));
-        }
-    }
-
-    /**
      * <p>Returns a new {@code Table} that contains all of the columns of the exiting {@code Table}
      * but with only the {@code Rows} from the {@code Table} where column <b>field</b> contains
-     * the {@code String} <b>value</b>.</p>
+     * the {@code String} <b>value</b>. Uses a column index if it is available.</p>
      * 
      * @param field
      * The column to be searched within the {@code Table}.
@@ -212,6 +184,7 @@ public class Table
         Row headers = getHeaderRow();
         int indexOfField = 0;
         Row currentRow;
+        ArrayList<Row> matchingRows;
 
         //Iterate through the header row to find the index of field.
         for(int i = 0; i < headers.getSize(); i++)
@@ -229,13 +202,28 @@ public class Table
         //Force the header row to exist within the new table.
         selectedTable.addRow(headers);
 
-        //Iterate through the entire table and check the ith column if it contains value.
+        //Checks the following (in order):
+        //1. Check if indexes exists at all
+        //2. Checks if the column index fits within indexes
+        //3. Checks if the BST exists in the correct position
+        if (indexes != null && indexOfField < indexes.size() && indexes.get(indexOfField) != null)
+        {
+            matchingRows = indexes.get(indexOfField).find(value);
+            
+            for(Row r : matchingRows)
+            {
+                selectedTable.addRow(r);
+            }
+        }
+        else //Iterate through the entire table and check the ith column if it contains value.
+        {
         for(int i = 0; i < rowCount; i++)
         {
             currentRow = table.get(i);
 
             if(currentRow.getColumnAt(indexOfField).equals(value))
                 selectedTable.addRow(currentRow);
+        }
         }
 
         return selectedTable;
@@ -306,48 +294,73 @@ public class Table
     }
 
     /**
+     * Creates a Binary Search Tree of all vlaues in the column <b>column</b>.
      * 
      * @param column
+     * The column to be indexed.
      */
     public void addIndex(String column)
     {
-        String key;
-        Row currentRow;
-        Row headers = getHeaderRow();
-        int columnIndex = 0;
+        if(indexes == null)
+            indexes = new ArrayList<>();
 
-        //Find columnIndex
-        for(int i = 0; i < headers.getSize(); i++)
+        Row headerRow = getHeaderRow();
+        int colIndex = 0;
+
+        //Find the index of column within the current table
+        for(int i = 0; i < headerRow.getSize(); i++)
         {
-            if(headers.getColumnAt(i).equals(column))
-                columnIndex = i;
+            if(headerRow.getColumnAt(i).equals(column))
+            {
+                colIndex = i;
+                break;
+            }
         }
 
-        for(int i = 0; i < getRows(); i++)
+        BST tree = new BST();
+        
+        //Loop through table, start at 1 to skip header row
+        for(int i = 1; i < getRows(); i++)
         {
-            currentRow = table.get(i);
-            key = currentRow.getColumnAt(columnIndex);
-            add(key, currentRow);
+            Row currentRow = getRowAt(i);
+            String key = currentRow.getColumnAt(colIndex);
+            tree.add(key, headerRow); //Most of the heavy lifting is done in the BST class code
         }
+
+        indexes.add(tree);
     }
 
     /**
+     * Adds a new {@code Row} to all existing Binary Search Trees in the {@code Table}'s indexes based on the given <b>key</b>.
      * 
      * @param key
+     * The value from a column that will serve as the key for the BST nodes
      * @param row
+     * The {@code Row} to be added to the BST node
      */
     public void add(String key, Row row)
     {
+        //addIndex() should be called first before this method is used.
+        if (indexes == null)
+            return;
+
+        for(BST tree : indexes)
+        {
+            tree.add(key, row);
+        }
     }
 
     /**
+     * Returns all {@code Rows} from the indexed column that match the given <b>key</b>.
      * 
      * @param key
+     * The value to search for in the column index.
      * @return
+     * An {@code ArrayList} of {@code Rows} that contain the key.
      */
     public ArrayList<Row> find(String key)
     {
-        return null;
+        return indexes.get(HEADER_INDEX).find(key);
     }
 
     /**
@@ -368,14 +381,14 @@ public class Table
     
         Table unionedTable = new Table();
 
-        //Create a deep copy of this.table into unioned table.
+        //Create a deep copy of this.table into unionedTable.
         for(int i = 0; i < getRows(); i++)
         {
             unionedTable.addRow(getRowAt(i));
         }
 
         //Also add the rows from t into unionedTable.
-        for(int i = 0; i < t.getRows(); i++)
+        for(int i = 1; i < t.getRows(); i++) //Start at 1 to skip header row
         {
             unionedTable.addRow(t.getRowAt(i));
         }
@@ -383,9 +396,71 @@ public class Table
         return unionedTable;
     }
 
+    /**
+     * <p>Creates a new {@code Table} that is the cross product of the current {@code Table} and {@code Table} <b>t</b></p>
+     * 
+     * @param t
+     * The second {@code Table} to cross the current {@code Table}
+     * @return
+     * The cross product of the current {@code Table} and {@code Table} <b>t</b>.
+     */
     public Table cross(Table t)
     {
         Table crossedTable = new Table();
-        crossedTable.setRows(rowCount + );
+        
+        //Create and add new header row from table A and B
+        Row rowAHeaders = this.getRowAt(HEADER_INDEX);
+        Row rowBHeaders = t.getRowAt(HEADER_INDEX);
+
+        //HEADER_INDEX was used although any row could be used.
+        int tableARowCount = this.getRowAt(HEADER_INDEX).getSize();
+        int tableBRowCount = t.getRowAt(HEADER_INDEX).getSize();
+
+        final int CROSSED_TABLE_COLUMN_COUNT = tableARowCount + tableBRowCount;
+
+        String[] newHeaderRow = new String[CROSSED_TABLE_COLUMN_COUNT];
+
+        //Copy header row from table A
+        for(int i = 0; i < tableARowCount; i++)
+        {
+            newHeaderRow[i] = rowAHeaders.getColumnAt(i);
+        }
+
+        //Copy header row from table B
+        for(int i = 0; i < tableBRowCount; i++)
+        {
+            newHeaderRow[i + tableARowCount] = rowBHeaders.getColumnAt(i);
+        }
+
+        crossedTable.addRow(newHeaderRow);
+
+
+        //Create the cross product of table A and B
+        for(int i = 1; i < this.getRows(); i++) //Start at 1 to skip header row
+        {
+            Row rowA = this.getRowAt(i);
+
+            for(int j = 1; j < t.getRows(); j++) //Start at 1 to skip header row
+            {
+                Row rowB = t.getRowAt(j);
+                String[] newRowData = new String[CROSSED_TABLE_COLUMN_COUNT];
+
+                //Copy A row
+                for(int k = 0; k < tableARowCount; k++)
+                {
+                    newRowData[k] = rowA.getColumnAt(k);
+                }
+
+                //Copy B row
+                for(int k = 0; k < tableBRowCount; k++)
+                {
+                    newRowData[tableARowCount + k] = rowB.getColumnAt(k);
+                }
+
+                crossedTable.addRow(newRowData);
+            }
+        }
+
+        return crossedTable;
     }
 }
