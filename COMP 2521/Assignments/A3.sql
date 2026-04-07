@@ -81,7 +81,7 @@ CREATE TABLE credential (
     FOREIGN KEY(empNum) REFERENCES employee
 ) ENGINE=InnoDB;
 
---TODO: populate tables
+
 INSERT INTO model (hrlyWaitingCharge, chargePerMile) VALUES
     (100, 5),
     (150, 7),
