@@ -3,6 +3,7 @@
 -- Instructor: Shoba Ittyipe
 -- Due date: April 12, 2026
 
+--Drop tables to start on a clean slate
 DROP TABLE IF EXISTS credential;
 DROP TABLE IF EXISTS crew;
 DROP TABLE IF EXISTS employee;
@@ -11,6 +12,8 @@ DROP TABLE IF EXISTS charter;
 DROP TABLE IF EXISTS aircraft;
 DROP TABLE IF EXISTS model;
 
+
+--Create tables
 CREATE TABLE model (
     modelNum INT AUTO_INCREMENT,
     hrlyWaitingCharge INT,
@@ -82,6 +85,7 @@ CREATE TABLE credential (
 ) ENGINE=InnoDB;
 
 
+--Populate tables
 INSERT INTO model (hrlyWaitingCharge, chargePerMile) VALUES
     (100, 5),
     (150, 7),
@@ -123,3 +127,5 @@ INSERT INTO credential (empNum, certificationDate, dateOfExpiry) VALUES
 -- Due date: April 12, 2026
 UPDATE TABLE aircraft;
 SET yearsInService = GETDATE() - yearsInService
+
+CREATE FUNCTION getAge()
