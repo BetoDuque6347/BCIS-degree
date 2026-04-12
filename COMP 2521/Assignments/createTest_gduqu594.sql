@@ -325,4 +325,4 @@ UPDATE crew
 SET hrlyCharge = 200
 WHERE empNum = 1 AND charterId = 1;
 
-SELECT * FROM crew_charge_audit;
+SELECT * FROM crew_change_audit;
