@@ -282,6 +282,8 @@ END$$
 delimiter ;
 
 -- =================Part 3b. crew_change_audit================= --
+DROP TABLE IF EXISTS crew_change_audit;
+
 CREATE TABLE crew_change_audit (
     charterId INT,
     empNum INT,
@@ -311,14 +313,27 @@ UPDATE aircraft
 SET dateOfFirstLaunch = '2018-01-01'
 WHERE aircraftNum = 1;
 
+SELECT * FROM aircraft;
+
 -- Test add aircraft
-CALL ADD_AIRCRAFT(999, 1, '2020-01-01');
+CALL ADD_AIRCRAFT(999, 1, '2020-01-01'); -- Normal use case. Should not return an error.
+CALL ADD_AIRCRAFT(1, 1, '2026-01-01'); -- Should throw an error.
+
+SELECT * FROM aircraft;
 
 -- Test modify aircraft
-CALL MOD_ACYEARSERV(999, 1, '2022-01-01');
+CALL MOD_ACYEARSERV(999, 1, '2022-01-01'); --Normal use case. Should not return an error.
+CALL MOD_ACYEARSERV(998, 2, NULL); --Should throw an error.
+
+SELECT * FROM aircraft;
 
 -- Test add crew
-CALL ADD_CREW(1, 1, 'Worlds best pilot.', 'Captain', 150.00);
+CALL ADD_CREW(1, 2, 'Worlds best pilot.', 'Captain', 150.00); --Normal use case. Should not return an error.
+CALL ADD_CREW(999, 2, 'Worlds best pilot.', 'Captain', 150.00); --Should throw an error.
+CALL ADD_CREW(1, 999, '.', 'Captain', 150.00); --Should throw an error.
+CALL ADD_CREW(1, 2, 'Can parallel park.', 'Captain', 150.00); --Should throw an error.
+
+SELECT * FROM crew;
 
 -- Test audit trigger
 UPDATE crew
