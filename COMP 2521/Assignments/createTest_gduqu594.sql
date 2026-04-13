@@ -22,11 +22,11 @@ CREATE TABLE model (
 ) ENGINE=InnoDB;
 
 CREATE TABLE aircraft (
+    aircraftNum INT,
     modelNum INT,
-    aircraftNum INT AUTO_INCREMENT,
     autoPilotAvailability BOOLEAN,
     dateOfFirstLaunch DATE,
-    yearsInService INT, --Derived attribute
+    yearsInService INT,
     PRIMARY KEY (modelNum, aircraftNum),
     FOREIGN KEY (modelNum) REFERENCES model(modelNum)
 ) ENGINE=InnoDB;
@@ -82,8 +82,8 @@ CREATE TABLE crew (
     startDate DATE,
     endDate DATE,
     PRIMARY KEY(charterId, empNum, credentialId),
-    FOREIGN KEY(charterId) REFERENCES charter,
-    FOREIGN KEY(empNum) REFERENCES employee,
+    FOREIGN KEY(charterId) REFERENCES charter(charterId),
+    FOREIGN KEY(empNum) REFERENCES employee(empNum),
     FOREIGN KEY(credentialId) REFERENCES credential(credentialId)
 ) ENGINE=InnoDB;
 
@@ -96,10 +96,10 @@ INSERT INTO model (hrlyWaitingCharge, chargePerMile) VALUES
     (150, 7),
     (200, 10);
 
-INSERT INTO aircraft (modelNum, autoPilotAvailability, dateOfFirstLaunch, yearsInService) VALUES
-    (1, TRUE,  '2015-01-10', NULL),
-    (1, FALSE, '2016-03-15', NULL),
-    (2, TRUE,  '2018-06-20', NULL);
+INSERT INTO aircraft (aircraftNum, modelNum, autoPilotAvailability, dateOfFirstLaunch, yearsInService) VALUES
+    (1, 1, TRUE,  '2015-01-10', NULL),
+    (2, 1, FALSE, '2016-03-15', NULL),
+    (3, 2, TRUE,  '2018-06-20', NULL);
 
 INSERT INTO customer (name, creditLimit, methodOfPay, addressNbr, street, city, province) VALUES
     ('Lobsang Nyima', 5000.00, 'CASH', 12, 'Main St', 'Calgary', 'AB'),
