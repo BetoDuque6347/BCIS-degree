@@ -39,9 +39,8 @@ public class A3
 
     public static void main(String[] args) throws Exception
     {
-        String[] arguments = {"COMP 2503\\A3\\a3_d1.csv","COMP 2503\\A3\\a3_d2.csv","COMP 2503\\A3\\a3_d3.csv","COMP 2503\\A3\\a3_d4.csv"};
         A3 a3 = new A3();
-        a3.run(arguments);
+        a3.run(args);
     }
 
     /**
