@@ -1,3 +1,9 @@
+-- Practice
+-- Author: Beto Duque
+-- NOTE: hope I do good on the final
+-- Date: 4/15/2026
+
+-- ================ SUB QUERIES ================ --
 -- Q1.
 SELECT s_id
 FROM student
@@ -190,4 +196,150 @@ WHERE s_id IN (
             WHERE c_sec_id = 5;
         )
     )
+);
+
+-- ================ UNIONS ================ --
+
+-- Q1.
+SELECT s_id AS person_id
+FROM student
+
+UNION
+
+SELECT f_id
+FROM faculty;
+
+-- Q2.
+SELECT s_city
+FROM student
+
+UNION
+
+SELECT loc_id
+FROM faculty;
+
+-- Q3.
+SELECT UNIQUE loc_id
+FROM faculty
+
+UNION
+
+SELECT UNIQUE loc_id
+FROM course_section;
+
+-- Q4.
+SELECT s_first AS first_name
+FROM student
+
+UNION
+
+SELECT f_first
+FROM faculty;
+
+-- Q5. (ChatGPT hallucinated an extra column lol)
+
+-- Q6.
+SELECT f_id AS id
+FROM faculty
+
+UNION
+
+SELECT s_id AS id
+FROM student
+
+UNION
+
+SELECT term_id AS id
+FROM term 
+
+UNION
+
+SELECT course_id AS id
+FROM course
+
+UNION
+
+SELECT c_sec_id AS id
+FROM course_section
+
+UNION
+
+SELECT loc_id AS id
+FROM location;
+
+-- Q7.
+SELECT s_id, 'Student' AS type
+FROM enrollment -- All students are currently enrolled in atleast one class
+
+UNION
+
+SELECT f_id, 'Faculty' AS type
+FROM faculty
+WHERE f_id IN (
+    SELECT f_id
+    FROM course_section
+    WHERE loc_id IN (
+        SELECT loc_id
+        FROM location
+        WHERE bldg_code = 'CR'
+    )
+);
+
+-- Q8.
+SELECT s_last AS last_name
+FROM student
+
+UNION
+
+SELECT f_last AS last_name
+FROM faculty;
+
+-- Q9.
+SELECT s_id, 'Student' as source
+FROM student
+WHERE s_id IN (
+    SELECT s_id
+    FROM enrollment
+    WHERE c_sec_id IN (
+        SELECT c_sec_id
+        FROM course_section
+        WHERE term_id = 1
+    )
+)
+
+UNION
+
+SELECT f_id, 'Faculty' as source
+FROM faculty
+WHERE f_id NOT IN (
+    SELECT f_id
+    FROM course_section
+);
+
+-- Q10.
+
+SELECT s_id AS 'Id', 'STUDENT' AS 'Type'
+FROM student
+WHERE s_id IN (
+    SELECT s_id
+    FROM enrollment
+    WHERE c_sec_id IN (
+        SELECT c_sec_id
+        FROM course_section
+        WHERE loc_id IN (
+            SELECT loc_id
+            FROM location
+            WHERE capacity > 50
+        )
+    )
+)
+
+UNION
+
+SELECT f_id AS 'Id', 'FACULTY' AS 'Type'
+FROM faculty
+WHERE f_id IN (
+    SELECT f_id
+    FROM course_section
+    WHERE term_id = 2
 );
