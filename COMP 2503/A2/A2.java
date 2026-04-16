@@ -1,3 +1,5 @@
+package A2;
+
 /**
  * <p>
  *      The main class for the Table and Row system. Contains a main method.
