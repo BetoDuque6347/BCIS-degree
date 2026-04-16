@@ -343,3 +343,50 @@ WHERE f_id IN (
     FROM course_section
     WHERE term_id = 2
 );
+
+-- ================ JOINS ================ --
+
+-- Q1.
+SELECT s_id, c_sec_id
+FROM enrollment
+
+-- Q2.
+SELECT cs.c_sec_id, l.bldg_code
+FROM course_section cs
+JOIN location l ON cs.loc_id = l.loc_id;
+
+-- Q3.
+SELECT s.s_id, cs.term_id
+FROM student s
+JOIN enrollment e ON s.s_id = e.s_id
+JOIN course_section cs ON e.c_sec_id = cs.c_sec_id;
+
+-- Q4.
+SELECT f.f_id, cs.c_sec_id
+FROM faculty f
+JOIN course_section cs ON f.f_id = cs.f_id
+WHERE cs.term_id = 2;
+
+-- Q5.
+SELECT s.s_id, e.c_sec_id
+FROM student LEFT JOIN enrollment e ON s.s_id = e.s_id;
+
+-- Q6.
+SELECT s.s_id, e.c_sec_id
+FROM student LEFT JOIN enrollment e ON s.s_id = e.s_id
+WHERE e.c_sec_id IS NULL;
+
+-- Q7.
+SELECT e.s_id, l.bldg_code
+FROM enrollment e
+JOIN course_section cs ON e.c_sec_id = cs.c_sec_id
+JOIN location l ON cs.loc_id = l.loc_id;
+
+-- Q8.
+SELECT f.f_id, cs.c_sec_id
+FROM faculty f LEFT JOIN course_section cs ON f.f_id = cs.f_id;
+
+-- Q9.
+SELECT f.f_id
+FROM faculty f JOIN course_section cs ON f.f_id = cs.f_id AND cs.term_id = 1
+WHERE cs.c_sec_id IS NULL
